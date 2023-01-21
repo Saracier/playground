@@ -30,30 +30,47 @@ const entriesFn = (array) => {
   return finalArray;
 };
 
-// to nie działa. Czemu?
-// const filterFn = (array, callback) => {
-//   let finalArray = [];
-//   for (let i = 0; i < array.length; i++) {
-//     if (callback(array[i])) {
-//       finalArray.push(array[i]);
-//     }
-//   }
-//   return finalArray;
-// };
-
 const filterFn = (array, callback) => {
   let finalArray = [];
   for (let i = 0; i < array.length; i++) {
-    const CurrenArrayVal = array[i];
-    if (callback(CurrenArrayVal)) {
-      finalArray.push(CurrenArrayVal);
+    const currenArrayVal = array[i];
+    if (callback(currenArrayVal)) {
+      finalArray.push(currenArrayVal);
     }
   }
   return finalArray;
 };
 
-const reduceFn = (array, callback, inital) => {};
+const reduceFn = (array, callback, inital) => {
+  let accumulator;
+  for (let i = 0; i < array.length; i++) {
+    const currenArrayVal = array[i];
+    if (i === 0) {
+      accumulator = inital;
+      accumulator = callback(accumulator, currenArrayVal);
+    } else {
+      accumulator = callback(accumulator, currenArrayVal);
+    }
+  }
+  return accumulator;
+};
 
-const everyFn = (array, callback) => {};
+const everyFn = (array, callback) => {
+  for (let i = 0; i < array.length; i++) {
+    const currenArrayVal = array[i];
+    if (!callback(currenArrayVal)) {
+      return false;
+    }
+  }
+  return true;
+};
 
-const someFn = (array, callback) => {};
+const someFn = (array, callback) => {
+  for (let i = 0; i < array.length; i++) {
+    const currenArrayVal = array[i];
+    if (callback(currenArrayVal)) {
+      return true;
+    }
+  }
+  return false;
+};

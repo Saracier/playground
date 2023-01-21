@@ -29,17 +29,16 @@ function findPhraseInArray(inputedArray, phrazeToFind) {
   const inputedArrayUpperedCaseCopy = inputedArray.map((el) =>
     el.toUpperCase()
   );
-  console.log(inputedArrayUpperedCaseCopy);
-  let ResultArray = [];
+  let resultArray = [];
 
   for (let i = 0; i < inputedArrayUpperedCaseCopy.length; i++) {
     if (inputedArrayUpperedCaseCopy[i].includes(phrazeToFindUpperedCaseCopy)) {
-      ResultArray.push([i, inputedArray[i]]);
+      resultArray.push([i, inputedArray[i]]);
     }
   }
 
-  return ResultArray.length > 0
-    ? ResultArray
+  return resultArray.length > 0
+    ? resultArray
     : `i'm sorry. I cloudn't find any input that matched the ${phrazeToFind} phraze`;
 }
 

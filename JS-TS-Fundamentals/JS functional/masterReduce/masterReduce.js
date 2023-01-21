@@ -1,0 +1,66 @@
+// Za pomocą metody .reduce wbudowanej w array odtwórz działanie innych metod tablicowych
+// Stwórz mapFn() – działa tak samo jak tablicowa metoda .map
+// Stwórz filterFn() – działa tak samo jak metoda tablicy .filter
+// Stwórz everyFn() – działa tak samo jak metoda tablicy .every
+// Stwórz someFn() - działa tak samo jak metoda tablicy .some
+
+function mapFn(array, callback) {
+  let copiedArray = [...array];
+  return copiedArray.reduce((accumulator, currentValue, indeks, array) => {
+    let modifiedValue = callback(currentValue, indeks, array);
+    accumulator.push(modifiedValue);
+    return accumulator;
+  }, []);
+}
+
+function filterFn(array, callback) {
+  let copiedArray = [...array];
+  // wywalić final array i zrobić wszystko na akumulatorze
+  return copiedArray.reduce((accumulator, currentValue, indeks, array) => {
+    if (callback(currentValue, indeks, array)) {
+      accumulator.push(currentValue);
+      return accumulator;
+    } else {
+      return accumulator;
+    }
+  }, []);
+}
+
+//   Sprawdzenie poprawności działania programu:
+// let arr = [1, 2, 3, 4, 5, 6];
+// let callback = (el) => el > 3;
+// console.log(filterFn(arr, callback));
+
+function everyFn(array, callback) {
+  // let copiedArray = [];
+  let copiedArray = array.reduce((accumulator, currentValue, indeks, array) => {
+    if (callback(currentValue, indeks, array)) {
+      accumulator.push(currentValue);
+      return accumulator;
+    } else {
+      return accumulator;
+    }
+  }, []);
+  return copiedArray.length === array.length ? true : false;
+}
+
+//   Sprawdzenie poprawności działania programu:
+// let arr = [1,2,3,4,5,6];
+// let callback = (el) => typeof el === 'number';
+// console.log(everyFn(arr, callback));
+
+function someFn(array, callback) {
+  let copiedArray = array.reduce((accumulator, currentValue, indeks, array) => {
+    if (callback(currentValue, indeks, array)) {
+      accumulator.push(currentValue);
+      return accumulator;
+    } else {
+      return accumulator;
+    }
+  }, []);
+  return copiedArray.length > 0 ? true : false;
+}
+//   Sprawdzenie poprawności działania programu:
+// let arr = [1, 2, 3, 4, 5, 6];
+// let callback = (el) => typeof el === 'number';
+// console.log(someFn(arr, callback));
