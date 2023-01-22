@@ -15,7 +15,7 @@ function filterWith(data, pattern) {
       ) {
         flag = true;
       }
-
+      // Czy zasady clean code nie mówią, że powinienem to rozbić na 14 mniejszych funkcji? Bo tutaj się zrobiło ładne sphagetti
       for (let i = 0; i < elementsInArray.length; i++) {
         let singleElementInIteration = elementsInArray[i];
         if (typeof singleElementInIteration === 'number') {

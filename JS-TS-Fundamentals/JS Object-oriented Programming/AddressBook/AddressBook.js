@@ -104,3 +104,7 @@ class AddressBook {
   // Ma mieć: listę wszystkich kontaktów, listę grup kontaktów
   // Ma umożliwiać: szukanie kontaktu po frazie, dodawanie/usuwanie/modyfikacje nowych kontaktów, dodawanie/usuwanie/modyfikacje nowych grup
 }
+
+// Dobra. Jak zrobić to zadanie i łopatologicznie o co chodzi we wzorcu buldier?
+// https://github.com/Localhost-Group/JS-TS-Fundamentals/blob/main/2.%20JS%20Object-oriented%20Programming/zadania/EmailBuilder-medium.md
+// https://refactoring.guru/pl/design-patterns/builder/typescript/example#example-0
