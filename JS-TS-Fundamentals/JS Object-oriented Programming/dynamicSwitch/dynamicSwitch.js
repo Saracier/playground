@@ -5,7 +5,6 @@
 //  Metoda .isValid zwraca true jeśli wszystkie warunki będą na false. Jeżeli jakikolwiek warunek zostanie spełniony, funkcja przerywa swoje działanie, wywołując przekazany callback dla tego warunku. Po każdym wykonaniu metody warunki i callbacki są czyszczone.
 
 class Switch {
-  // cases do wyjebania. Nie wiadomo po co tu jest
   conditions = []; // Czyli nasze warunki sprawdzające
 
   add(condition, callback) {

@@ -15,18 +15,20 @@ class Contact {
     this.uuid = Math.random();
   }
 
-  changeName(inputedName) {
-    this.name = inputedName;
+  updateProperty(prop, newProperty) {
+    this[prop] = newProperty;
     this.modificationDate = new Date();
   }
 
-  changeSurname(inputedSurname) {
-    this.surname = inputedSurname;
-    this.modificationDate = new Date();
-  }
-
-  changeEmail(inputedEmail) {
-    this.email = inputedEmail;
+  changeContactParameters(parameter, newValue) {
+    if (
+      parameter !== 'name' ||
+      parameter !== 'surname' ||
+      parameter !== 'email'
+    ) {
+      return;
+    }
+    this.parameter = newValue;
     this.modificationDate = new Date();
   }
 
@@ -44,22 +46,26 @@ class Group {
     this.uuid = Math.random();
   }
 
+  changeGroupName(name) {
+    this.name = name;
+  }
+
   addContact(newContact) {
     contacts.push(newContact);
   }
 
-  removeContact(contactToRemove) {
-    let indexInArray = contacts.indexOf(contactToRemove);
-    if (indexInArray >= 0) {
-      contacts.splice(indexInArray, 1);
+  removeContact(uuid) {
+    let indexOfContact = contacts.find((el) => el.uuid == uuid);
+    if (indexOfContact) {
+      contacts.splice(indexOfContact, 1);
     } else {
-      console.log(`can't found such contact like ${contactToRemove}`);
+      console.log(`can't found such contact with UUID ${uuid}`);
     }
   }
 
-  doesContactExists(contactToFind) {
-    let indexInArray = contacts.indexOf(contactToFind);
-    if (indexInArray >= 0) {
+  doesContactExist(uuid) {
+    let indexOfContact = contacts.find((el) => el.uuid == uuid);
+    if (indexOfContact) {
       return true;
     } else {
       return false;
@@ -68,43 +74,66 @@ class Group {
 }
 
 class AddressBook {
+  // Ma mieć: listę wszystkich kontaktów, listę grup kontaktów
+  // Ma umożliwiać: szukanie kontaktu po frazie, dodawanie/usuwanie/modyfikacje nowych kontaktów, dodawanie/usuwanie/modyfikacje nowych grup
   allContacts = [];
   allGroups = [];
+
   addNewContact(name, surname, email) {
     this.allContacts.push(new Contact(name, surname, email));
   }
+
   deleteContact(uuid) {
-    let numberOfTheContact = this.allContacts.find((el) => el.uuid == uuid);
-    if (numberOfTheContact) {
-      allContacts.splice(numberOfTheContact, 1);
-    }
-  }
-  findContact(input) {
-    const regexedInput = new RegExp(input);
-    for (let i = 0; i < allContacts.length; i++) {
-      for (key in allContacts[i]) {
-        if (allContacts[i].key.match(regexedInput)) {
-          return allContacts[i].uuid;
+    let contactId = this.allContacts.find((el) => el.uuid == uuid);
+    if (contactId) {
+      this.allContacts.splice(contactId, 1);
+      // przy okazji usuwanie kontaktu z grup
+      for (let i = 0; i < this.allContacts.length; i++) {
+        for (let x = 0; x < this.allContacts[i].contacts.length; x++) {
+          if ((this.allContacts[i].contacts.uuid = uuid)) {
+            this.allContacts[i].contacts.splice(x, 1);
+          }
         }
       }
     }
   }
-  changeContactName(uuid, inputedName) {
-    let numberOfTheContact = this.allContacts.find((el) => el.uuid == uuid);
-    if (numberOfTheContact) {
-      numberOfTheContact.changeName(inputedName);
+
+  findContact(input) {
+    const regexedInput = new RegExp(input);
+    for (let i = 0; i < this.allGroups.length; i++) {
+      for (key in this.allContacts[i]) {
+        if (this.allContacts[i].key.match(regexedInput)) {
+          return this.allContacts[i].uuid;
+        }
+      }
     }
-    // i tak samo robimy email, surname, actualizeModificationDate itp.
   }
+
+  changeContactData(uuid, dataToChange, newValueOfDate) {
+    let contactId = this.allContacts.find((el) => el.uuid == uuid);
+    if (this.allContacts.contactId) {
+      contactId.changeContactParameters(dataToChange, newValueOfDate);
+    }
+  }
+
   addNewGroup(name) {
     this.allGroups.push(new Group(name));
-    // I tutaj już przerywam robienie, bo nawet nie wiem czy to co zrobiłem jest nawet w najmniejszym stopniu poprawne
   }
 
-  // Ma mieć: listę wszystkich kontaktów, listę grup kontaktów
-  // Ma umożliwiać: szukanie kontaktu po frazie, dodawanie/usuwanie/modyfikacje nowych kontaktów, dodawanie/usuwanie/modyfikacje nowych grup
-}
+  changeNameOfGroup(uuid, newName) {
+    for (let i = 0; i < this.allGroups.length; i++) {
+      if (this.allGroups[i].uuid === uuid) {
+        this.allGroups[i].changeGroupName(newName);
+      }
+    }
+  }
 
-// Dobra. Jak zrobić to zadanie i łopatologicznie o co chodzi we wzorcu buldier?
-// https://github.com/Localhost-Group/JS-TS-Fundamentals/blob/main/2.%20JS%20Object-oriented%20Programming/zadania/EmailBuilder-medium.md
-// https://refactoring.guru/pl/design-patterns/builder/typescript/example#example-0
+  deleteGroup(uuid) {
+    for (let i = 0; i < this.allGroups.length; i++) {
+      let indexOfContact = this.allGroups.find((el) => el.uuid == uuid);
+      if (indexOfContact) {
+        this.allGroups.splice(indexOfContact, 1);
+      }
+    }
+  }
+}

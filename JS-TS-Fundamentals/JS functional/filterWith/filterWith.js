@@ -5,6 +5,7 @@
 function filterWith(data, pattern) {
   const regExpPattern = new RegExp(pattern);
 
+  // Czy można to jakoś prościej zrobić? I tak. wiem, że nie wklejam nigdzie index i array
   let finalArray = data.filter((element, index, array) => {
     const elementsInArray = Object.values(element);
     let flag = false;
