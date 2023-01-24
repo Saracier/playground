@@ -8,12 +8,25 @@
 
 class User {
   // Ma miec: Imie, Nazwisko, uuid
+  constructor(firstName, secondName) {
+    (this.firstName = firstName),
+      (this.secondName = secondName),
+      (this.uuid = Math.random());
+  }
 }
 
 class Book {
   // Ma miec: Tytuł, Autora, uuid, losowe zdjęcie oraz krótki opis
+  constructor(title, author, description) {
+    this.title = title;
+    this.author = author;
+    this.description = description;
+    this.uuid = Math.random();
+    this.picture = `https://placebear.com/640/${parseInt(Math.random() * 640)}`;
+  }
 }
 
+// poniżej niezbyt ogarniam jak to połączyć
 class Booking {
   // Booking dostaje użytkownika w constructorze
   // Ma mieć: datę wypożyczenia, datę zwrotu (+7d od wypożyczenia), listę wypożyczonych książek, kara
