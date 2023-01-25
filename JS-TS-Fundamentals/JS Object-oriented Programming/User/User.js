@@ -15,86 +15,64 @@
 // - imię i nazwisko musi być niepuste
 
 class Validator {
-  constructor(
-    firstName,
-    surname,
-    birthDate,
-    password,
-    gender,
-    email,
-    accessToken
-  ) {
-    this.firstName = firstnameValidator(firstName);
-
-    this.surname = surnameValidator(surname);
-    this.birthDate = birthDateValidator(birthDate);
-    this.password = passwordValidator(password);
-    this.gender = genderValidator(gender);
-    this.email = emailValidator(email);
-    this.accessToken = accessTokenValidator(accessToken);
-  }
-
-  firstnameValidator(firstName) {
+  static firstnameValidator(firstName) {
     if (firstName.length <= 0 || typeof firstName !== 'string') {
       throw new Error('invalid first name');
     }
     return firstName;
   }
-  surnameValidator(surname) {
+  static surnameValidator(surname) {
     if (firstName.length <= 0 || typeof firstName !== 'string') {
       throw new Error('invalid surname');
     }
+    return surname;
   }
-  birthDateValidator(birthDate) {
-    // milcząco przyjmuje, że birthDate to data
+  static birthDateValidator(birthDate) {
     const newDate = new Date(birthDate);
     return `${newDate.getMonth}/${newDate.getDay}/${newDate.getFullYear}`;
   }
 
-  passwordValidator(password) {
-    // - hasło ma mieć min 8 znaków, co najmniej jedną wielką literę i co najmniej jedną cyfrę oraz co najmniej 1 znak specjalny
+  static passwordValidator(password) {
     if (password.length < 8) {
       throw new Error('Your password needs a minimum of eight characters');
     } else if (password.search(/[0-9]/) < 0) {
       throw new Error('Your password needs a number');
     } else if (password.search(/[A-Z]/) < 0) {
-      throw new Error('Your password needs an uppser case letter');
+      throw new Error('Your password needs an single uppsercase letter');
     } else if (password.search(/[!@#$%^&*]/) < 0) {
       throw new Error('Your password needs a special character');
     } else {
       return password;
     }
   }
-  genderValidator(gender) {
-    if (gender === 'male' || gender === 'female') {
-      return gender;
-    } else {
+  static genderValidator(gender) {
+    if (gender !== 'male' && gender !== 'female') {
       throw new Error('Gender must be male or female');
     }
+    return gender;
   }
 
-  emailValidator(email) {
+  static emailValidator(email) {
     if (
-      email.match(
+      !email.match(
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       )
     ) {
-      return email;
-    } else {
       throw new Error('invalid email');
     }
+    return email;
   }
 
-  accessTokenValidator(accessToken) {
+  static accessTokenValidator(accessToken) {
     if (accessToken === 'admin') {
-      this.accessToken = 'admin';
+      return accessToken;
     } else {
-      this.accessToken = 'normal';
+      return 'normal';
     }
   }
 }
 
-class User extends Validator {
+class User {
   // imię
   // nazwisko
   // datę urodzenia
@@ -111,16 +89,24 @@ class User extends Validator {
     email,
     accessToken
   ) {
-    super(firstName, surname, birthDate, password, gender, email, accessToken);
+    this.firstName = Validator.firstnameValidator(firstName);
+    this.surname = Validator.surnameValidator(surname);
+    this.birthDate = Validator.birthDateValidator(birthDate);
+    this.password = Validator.passwordValidator(password);
+    this.gender = Validator.genderValidator(gender);
+    this.email = Validator.emailValidator(email);
+    this.accessToken = Validator.accessTokenValidator(accessToken);
   }
 
   changeProperties(whatProperty, newValueOfProperty) {
     if (whatProperty === 'password') {
-      return passwordValidator(newValueOfProperty);
+      return Validator.passwordValidator(newValueOfProperty);
     } else if ((whatProperty = 'email')) {
-      return emailValidator(newValueOfProperty);
+      return Validator.emailValidator(newValueOfProperty);
     } else if ((whatProperty = 'accessToken')) {
-      return changeAccesToken(newValueOfProperty);
+      return Validator.accessTokenValidator(newValueOfProperty);
+    } else {
+      throw new Error('inputed property cannot be changed');
     }
   }
 }
@@ -130,17 +116,7 @@ class App {
   constructor() {
     this.listOfUsers = [];
   }
-  // createUser i createAdmin robiąto samo. Jak sprawić, żeby tylko admin miał dostęp do metody zmieniającej coś u innego użytkownika?
-  // I przy okazji jak określić że użytkownik coś chce? Że ósma osoba z arraya listOfusers wywołuje jakąś metodę?
-  createUser(
-    firstName,
-    surname,
-    birthDate,
-    password,
-    gender,
-    email,
-    accessToken
-  ) {
+  createUser(firstName, surname, birthDate, password, gender, email) {
     const newUser = new User(
       firstName,
       surname,
@@ -148,19 +124,11 @@ class App {
       password,
       gender,
       email,
-      accessToken
+      'normal'
     );
     this.listOfUsers.push(newUser);
   }
-  createAdmin(
-    firstName,
-    surname,
-    birthDate,
-    password,
-    gender,
-    email,
-    accessToken
-  ) {
+  createAdmin(firstName, surname, birthDate, password, gender, email) {
     const newAdmin = new User(
       firstName,
       surname,
@@ -168,8 +136,18 @@ class App {
       password,
       gender,
       email,
-      accessToken
+      'admin'
     );
     this.listOfUsers.push(newAdmin);
+  }
+
+  changeUserProperties(sourceUser, targetUser, propertyName, newPropertyValue) {
+    if (sourceUser.accessToken === 'admin' || sourceUser === targetUser) {
+      targetUser.changeProperties(propertyName, newPropertyValue);
+    } else {
+      throw new Error(
+        "Cannot change these properties without admin's permissions"
+      );
+    }
   }
 }

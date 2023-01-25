@@ -18,9 +18,9 @@ class CartItem {
 
   changeCartItemParameters(parameter, newValueOfParameter) {
     if (
-      parameter !== 'name' ||
-      parameter !== 'category' ||
-      parameter !== 'price' ||
+      parameter !== 'name' &&
+      parameter !== 'category' &&
+      parameter !== 'price' &&
       parameter !== 'discount'
     ) {
       return;
@@ -38,54 +38,63 @@ class Cart {
 
   constructor() {
     this.uuid = Math.random();
-    this.itemsInTheCart = [];
-    this.discountForTheCart;
+    this.itemsInCart = [];
+    this.discountForCart;
     this.discountCode = false;
   }
 
   addItemsToCart(name, category, price, discount) {
     const itemToAdd = new CartItem(name, category, price, discount);
-    this.itemsInTheCart.push({ itemInCart: itemToAdd, quantity: 1 });
+    this.itemsInCart.push({ itemInCart: itemToAdd, quantity: 1 });
+  }
+
+  findItemUuid(nameOfItem) {
+    const reg = new RegExp(nameOfItem);
+    for (let i = 0; i < this.itemsInCart.length; i++) {
+      if (reg.test(this.itemsInCart[i].itemInCart.name)) {
+        return this.itemsInCart[i].itemInCart.uuid;
+      }
+    }
   }
 
   removeItemsFromCart(uuid) {
-    for (let i = 0; i < this.itemsInTheCart.length; i++) {
-      let indexOfContact = this.itemsInTheCart.find(
+    for (let i = 0; i < this.itemsInCart.length; i++) {
+      let indexOfContact = this.itemsInCart.find(
         (el) => el.itemInCart.uuid === uuid
       );
       if (indexOfContact) {
-        if (this.itemsInTheCart[indexOfContact].quantity === 1) {
-          this.itemsInTheCart.splice(indexOfContact, 1);
+        if (this.itemsInCart[indexOfContact].quantity === 1) {
+          this.itemsInCart.splice(indexOfContact, 1);
         } else {
-          this.itemsInTheCart[indexOfContact].quantity =
-            this.itemsInTheCart[indexOfContact].quantity - 1;
+          this.itemsInCart[indexOfContact].quantity =
+            this.itemsInCart[indexOfContact].quantity - 1;
         }
       }
     }
   }
 
   updateQuantityOfItem(uuid, newQuantity) {
-    for (let i = 0; i < this.itemsInTheCart.length; i++) {
-      let indexOfContact = this.itemsInTheCart.find(
+    for (let i = 0; i < this.itemsInCart.length; i++) {
+      let indexOfContact = this.itemsInCart.find(
         (el) => el.itemInCart.uuid === uuid
       );
       if (indexOfContact) {
-        this.itemsInTheCart[indexOfContact].quantity === newQuantity;
+        this.itemsInCart[indexOfContact].quantity === newQuantity;
       }
     }
   }
 
-  countCartDiscount() {
+  countTotal() {
     let finalValue = 0;
-    for (let i = 0; i < this.itemsInTheCart.length; i++) {
+    for (let i = 0; i < this.itemsInCart.length; i++) {
       const priceOfItems =
-        this.itemsInTheCart[i].quantity *
-        this.itemsInTheCart[i].price *
-        this.itemsInTheCart[i].discount;
+        this.itemsInCart[i].quantity *
+        this.itemsInCart[i].price *
+        this.itemsInCart[i].discount;
       finalValue += priceOfItems;
     }
     if (this.discountCode) {
-      finalValue = finalValue * this.discountForTheCart;
+      finalValue = finalValue * this.discountForCart;
     }
     return finalValue;
   }

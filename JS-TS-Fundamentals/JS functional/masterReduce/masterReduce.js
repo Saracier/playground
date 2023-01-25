@@ -15,14 +15,9 @@ function mapFn(array, callback) {
 
 function filterFn(array, callback) {
   let copiedArray = [...array];
-  // wywalić final array i zrobić wszystko na akumulatorze
   return copiedArray.reduce((accumulator, currentValue, indeks, array) => {
-    if (callback(currentValue, indeks, array)) {
-      accumulator.push(currentValue);
-      return accumulator;
-    } else {
-      return accumulator;
-    }
+    if (callback(currentValue, indeks, array)) accumulator.push(currentValue);
+    return accumulator;
   }, []);
 }
 
@@ -32,7 +27,6 @@ function filterFn(array, callback) {
 // console.log(filterFn(arr, callback));
 
 function everyFn(array, callback) {
-  // let copiedArray = [];
   let copiedArray = array.reduce((accumulator, currentValue, indeks, array) => {
     if (callback(currentValue, indeks, array)) {
       accumulator.push(currentValue);

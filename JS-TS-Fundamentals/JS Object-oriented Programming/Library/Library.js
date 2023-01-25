@@ -28,6 +28,11 @@ class Book {
 
 // poniżej niezbyt ogarniam jak to połączyć
 class Booking {
+  constructor(user) {
+    this.user = user;
+  }
+
+  changeBookStatus(whatStatusToChange, UUID) {}
   // Booking dostaje użytkownika w constructorze
   // Ma mieć: datę wypożyczenia, datę zwrotu (+7d od wypożyczenia), listę wypożyczonych książek, kara
   // Ma umożliwiać:
@@ -37,6 +42,20 @@ class Booking {
 }
 
 class Library {
+  bookings = [Booking];
+  constructor() {
+    this.listsOfTheBooks = [];
+    this.listOfTheUsers = [];
+  }
+
+  newUser() {
+    let newUser = new Booking();
+    listOfTheUsers.push(newUser);
+  }
+
+  bookStatus() {
+    bookings[4].changeBookStatus('Harry Potter', 213123);
+  }
   // Ma miec: listę książek, listę książek dostępnych (które nie zostały wypożyczone),
   // lista wypożyczeń, lista użytkowników
   // Ma umożliwiać:
