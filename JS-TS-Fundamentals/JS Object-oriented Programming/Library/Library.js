@@ -26,19 +26,59 @@ class Book {
   }
 }
 
-// poniżej niezbyt ogarniam jak to połączyć
 class Booking {
-  constructor(user) {
-    this.user = user;
-  }
-
-  changeBookStatus(whatStatusToChange, UUID) {}
   // Booking dostaje użytkownika w constructorze
   // Ma mieć: datę wypożyczenia, datę zwrotu (+7d od wypożyczenia), listę wypożyczonych książek, kara
   // Ma umożliwiać:
   // - usuwanie i dodawanie książki do listy wypożyczonych książek
   // - zwrot - jeśli odbędzie się terminowo kara jest 0 - jesli nie -
   // każdy dzień zwłoki to naliczenie jakiejś kary.
+  constructor(user) {
+    this.user = user;
+  }
+  countDateOfTakingBook() {
+    return new Date();
+  }
+  countDateOfReturnignBook() {
+    return new Date(
+      dateOfTakingBook.getFullYear(),
+      dateOfTakingBook.getMonth(),
+      dateOfTakingBook.getDate() + 7
+    );
+  }
+  countPenatly(currentDate, plannedDateOfReturn) {
+    if (plannedDateOfReturn < currentDate) {
+      return;
+    }
+    const timeOfOverdue = currentDate - plannedDateOfReturn;
+    const priceForOveruindSingleDay = 5;
+    const priceToPay = Math.floor(
+      (timeOfOverdue / 86400000) * priceForOveruindSingleDay
+    );
+    return priceToPay;
+  }
+  listOfTakenBooks = [];
+  overdueCharge = 0;
+
+  takeBook(book) {
+    const bookDetails = {
+      book: book,
+      dateOfTakingBook: this.countDateOfTakingBook(),
+      DateOfReturnignBook: this.countDateOfReturnignBook(),
+    };
+    listOfTakenBooks.push(bookDetails);
+  }
+
+  returnBook(book) {
+    for (let i = 0; i < this.listOfTakenBooks.length; i++) {
+      if (this.listOfTakenBooks[i].book === book) {
+        const priceToPay = countPenatly();
+        this.overdueCharge = this.overdueCharge + priceToPay;
+        this.listOfTakenBooks.splice(i, 1);
+        break;
+      }
+    }
+  }
 }
 
 class Library {
