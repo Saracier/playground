@@ -36,6 +36,14 @@ class Booking {
   constructor(user) {
     this.user = user;
   }
+  //
+  //
+  //
+  // Nie podobają mi się nazwy tych klas. Z jednej strony są za długie, a z drugiej strony nie wiem czy skrócenie tego do "countStartingDate" lub czegoś podobnego byłoby poprawne z perspektywy clean code
+  //
+  //
+  //
+  //
   countDateOfTakingBook() {
     return new Date();
   }
@@ -70,32 +78,86 @@ class Booking {
   }
 
   returnBook(book) {
+    let flag = true;
     for (let i = 0; i < this.listOfTakenBooks.length; i++) {
       if (this.listOfTakenBooks[i].book === book) {
         const priceToPay = countPenatly();
         this.overdueCharge = this.overdueCharge + priceToPay;
         this.listOfTakenBooks.splice(i, 1);
+        flag = false;
         break;
       }
+    }
+    if (flag) {
+      throw new Error(`Cannot find ${book.name}.`);
     }
   }
 }
 
 class Library {
-  bookings = [Booking];
   constructor() {
-    this.listsOfTheBooks = [];
+    this.listsOfBooks = [];
+    this.listOfAvalibleBooks = [];
     this.listOfTheUsers = [];
+    this.listOfTheBookings = [];
   }
 
-  newUser() {
-    let newUser = new Booking();
+  newUser(firstName, secondName) {
+    const newUser = new User(firstName, secondName);
     listOfTheUsers.push(newUser);
   }
 
-  bookStatus() {
-    bookings[4].changeBookStatus('Harry Potter', 213123);
+  newBooking(user) {
+    const newBooking = new Booking(user);
+    listOfTheBookings.push('newBooking');
   }
+
+  newBook(title, author, description) {
+    const newBook = new Book(title, author, description);
+    listOfAvalibleBooks.push(newBook);
+    listOfBooks.push(newBook);
+  }
+
+  removeBook(uuid) {
+    for (let i = 0; i < listsOfAvalibleBooks; i++) {
+      if (listsOfAvalibleBooks[i].uuid == uuid) {
+        listsOfAvalibleBooks.splice(i, 1);
+      } else {
+        throw new Error('book cannot be found. Maybe it is taken?');
+      }
+    }
+    for (let i = 0; i < listsOfBooks; i++) {
+      if (listsOfBooks[i].uuid == uuid) {
+        listsOfBooks.splice(i, 1);
+      }
+    }
+  }
+
+  printBooksInLibary() {
+    let list = [];
+    // Chyba troche za dużo polegam na for podczas iterowania. Jak możnaby pozamieniać fory?
+    for (let i = 0; i < listOfBooks.length; i++) {
+      const singleEntry = `Title: ${listOfBooks[i].title} Author: ${listOfBooks[i].author}, UUID: ${listOfBooks[i].uuid}`;
+      list.push(singleEntry);
+    }
+    return list;
+  }
+
+  takeBook(booking, bookUuid) {
+    const avalibleBookNumber = listOfAvalibleBooks.find(
+      (el) => el.uuid == bookUuid
+    );
+    const avalibleBook = listOfAvalibleBooks[avalibleBookNumber];
+    booking.takeBook(avalibleBook);
+    listOfAvalibleBooks.splice(avalibleBookNumber, 1);
+  }
+
+  returnBook(booking, bookUuid) {
+    const bookNumber = listOfBooks.find((el) => el.uuid == bookUuid);
+    listOfAvalibleBooks.push(listOfBooks[bookNumber]);
+    booking.returnBook(listOfBooks[bookNumber]);
+  }
+
   // Ma miec: listę książek, listę książek dostępnych (które nie zostały wypożyczone),
   // lista wypożyczeń, lista użytkowników
   // Ma umożliwiać:
