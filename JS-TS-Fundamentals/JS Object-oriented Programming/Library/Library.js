@@ -95,6 +95,13 @@ class Booking {
 }
 
 class Library {
+  // Ma miec: listę książek, listę książek dostępnych (które nie zostały wypożyczone),
+  // lista wypożyczeń, lista użytkowników
+  // Ma umożliwiać:
+  // - dodawanie książek do listy
+  // - usuwanie książek z listy
+  // - wypożyczanie książki dla usera X
+  // - oddanie wypożyczania książki
   constructor() {
     this.listsOfBooks = [];
     this.listOfAvalibleBooks = [];
@@ -109,7 +116,7 @@ class Library {
 
   newBooking(user) {
     const newBooking = new Booking(user);
-    listOfTheBookings.push('newBooking');
+    listOfTheBookings.push(newBooking);
   }
 
   newBook(title, author, description) {
@@ -117,13 +124,21 @@ class Library {
     listOfAvalibleBooks.push(newBook);
     listOfBooks.push(newBook);
   }
-
+  //
+  //
+  //
+  // W sumie w TSie używa się popularnie dekoratorów? Czy raczej nisza?
+  //
+  //
+  //
+  //
+  //
   removeBook(uuid) {
     for (let i = 0; i < listsOfAvalibleBooks; i++) {
       if (listsOfAvalibleBooks[i].uuid == uuid) {
         listsOfAvalibleBooks.splice(i, 1);
       } else {
-        throw new Error('book cannot be found. Maybe it is taken?');
+        throw new Error('book cannot be found. Maybe it has been taken?');
       }
     }
     for (let i = 0; i < listsOfBooks; i++) {
@@ -135,7 +150,20 @@ class Library {
 
   printBooksInLibary() {
     let list = [];
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     // Chyba troche za dużo polegam na for podczas iterowania. Jak możnaby pozamieniać fory?
+    //
+    //
+    //
+    //
+    //
+    //
     for (let i = 0; i < listOfBooks.length; i++) {
       const singleEntry = `Title: ${listOfBooks[i].title} Author: ${listOfBooks[i].author}, UUID: ${listOfBooks[i].uuid}`;
       list.push(singleEntry);
@@ -147,6 +175,9 @@ class Library {
     const avalibleBookNumber = listOfAvalibleBooks.find(
       (el) => el.uuid == bookUuid
     );
+    if (!avalibleBookNumber) {
+      throw new Error('no such book found mate');
+    }
     const avalibleBook = listOfAvalibleBooks[avalibleBookNumber];
     booking.takeBook(avalibleBook);
     listOfAvalibleBooks.splice(avalibleBookNumber, 1);
@@ -154,15 +185,10 @@ class Library {
 
   returnBook(booking, bookUuid) {
     const bookNumber = listOfBooks.find((el) => el.uuid == bookUuid);
+    if (!bookNumber) {
+      throw new Error('no such book found mate');
+    }
     listOfAvalibleBooks.push(listOfBooks[bookNumber]);
     booking.returnBook(listOfBooks[bookNumber]);
   }
-
-  // Ma miec: listę książek, listę książek dostępnych (które nie zostały wypożyczone),
-  // lista wypożyczeń, lista użytkowników
-  // Ma umożliwiać:
-  // - dodawanie książek do listy
-  // - usuwanie książek z listy
-  // - wypożyczanie książki dla usera X
-  // - oddanie wypożyczania książki
 }
