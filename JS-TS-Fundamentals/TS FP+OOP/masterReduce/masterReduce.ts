@@ -4,10 +4,13 @@
 // Stwórz everyFn() – działa tak samo jak metoda tablicy .every
 // Stwórz someFn() - działa tak samo jak metoda tablicy .some
 
-function mapFn(array, callback) {
+function mapFn<T>(
+  array: Array<T>,
+  callback: (currentValue: T, index: number, array: T[]) => T
+) {
   let copiedArray = [...array];
-  return copiedArray.reduce((accumulator, currentValue, indeks, array) => {
-    let modifiedValue = callback(currentValue, indeks, array);
+  return copiedArray.reduce((accumulator: T[], currentValue, index, array) => {
+    let modifiedValue = callback(currentValue, index, array);
     accumulator.push(modifiedValue);
     return accumulator;
   }, []);
@@ -15,8 +18,8 @@ function mapFn(array, callback) {
 
 function filterFn(array, callback) {
   let copiedArray = [...array];
-  return copiedArray.reduce((accumulator, currentValue, indeks, array) => {
-    if (callback(currentValue, indeks, array)) accumulator.push(currentValue);
+  return copiedArray.reduce((accumulator, currentValue, index, array) => {
+    if (callback(currentValue, index, array)) accumulator.push(currentValue);
     return accumulator;
   }, []);
 }
@@ -27,8 +30,8 @@ function filterFn(array, callback) {
 // console.log(filterFn(arr, callback));
 
 function everyFn(array, callback) {
-  let copiedArray = array.reduce((accumulator, currentValue, indeks, array) => {
-    if (callback(currentValue, indeks, array)) {
+  let copiedArray = array.reduce((accumulator, currentValue, index, array) => {
+    if (callback(currentValue, index, array)) {
       accumulator.push(currentValue);
       return accumulator;
     } else {
@@ -44,8 +47,8 @@ function everyFn(array, callback) {
 // console.log(everyFn(arr, callback));
 
 function someFn(array, callback) {
-  let copiedArray = array.reduce((accumulator, currentValue, indeks, array) => {
-    if (callback(currentValue, indeks, array)) {
+  let copiedArray = array.reduce((accumulator, currentValue, index, array) => {
+    if (callback(currentValue, index, array)) {
       accumulator.push(currentValue);
       return accumulator;
     } else {

@@ -1,10 +1,12 @@
 // Napisz funkcję generateArrayWithRandomNumbers, która zwróci tablicę o długości podanej jako „howManyNumbers”. Ta tablica musi zawierać w sobie losowe liczby z zakresu min i max.
 //  Napisz funkcje generateArrayWithArrays, która wygeneruje array z arrayami pochodzącymi z poprzedniej funkcji
+//
+// tsc generateArrayWithRandomNumbers.ts
 
 function generateArrayWithRandomNumbers(
-  howManyNumbers,
-  minNumbersAcceptedInArray,
-  maxNumbersAcceptedInArray
+  howManyNumbers: number,
+  minNumbersAcceptedInArray: number,
+  maxNumbersAcceptedInArray: number
 ) {
   if (
     typeof howManyNumbers !== 'number' ||
@@ -14,7 +16,7 @@ function generateArrayWithRandomNumbers(
     return;
   }
 
-  const finalArray = [];
+  const finalArray: number[] = [];
   while (finalArray.length < howManyNumbers) {
     const randomGeneratedNumber =
       Math.floor(
@@ -26,10 +28,10 @@ function generateArrayWithRandomNumbers(
 }
 
 function generateArrayOfArrays(
-  howManyArrays,
-  howManyNumbers,
-  minNumbersAcceptedInArray,
-  maxNumbersAcceptedInArray
+  howManyArrays: number,
+  howManyNumbers: number,
+  minNumbersAcceptedInArray: number,
+  maxNumbersAcceptedInArray: number
 ) {
   if (
     typeof howManyArrays !== 'number' ||
@@ -39,7 +41,7 @@ function generateArrayOfArrays(
   ) {
     return;
   }
-  const finalArray = [];
+  const finalArray: number[][] = [];
 
   for (let i = 0; i < howManyArrays; i++) {
     const generatedArrayOnILoop = generateArrayWithRandomNumbers(
@@ -47,7 +49,9 @@ function generateArrayOfArrays(
       minNumbersAcceptedInArray,
       maxNumbersAcceptedInArray
     );
-    finalArray.push(generatedArrayOnILoop);
+    if (generatedArrayOnILoop) {
+      finalArray.push(generatedArrayOnILoop);
+    }
   }
   return finalArray;
 }
