@@ -8,7 +8,10 @@
 //     entriesOnPage
 // }
 
-function paginateArray(dataEntries, settings) {
+function paginateArray(
+  dataEntries: number[],
+  settings: { actualPageIndex: number; entriesOnPage: number }
+) {
   const { entriesOnPage, actualPageIndex } = settings;
   if (
     !Array.isArray(dataEntries) ||
@@ -31,7 +34,7 @@ function paginateArray(dataEntries, settings) {
     return `Whoops. This page doesn't exit in this array. It exeeds limit of array`;
   }
 
-  let entriesOnSelectedPage = [];
+  let entriesOnSelectedPage: number[] = [];
   for (let i = start; i < start + entriesOnPage; i++) {
     if (dataEntries[i]) {
       entriesOnSelectedPage.push(dataEntries[i]);

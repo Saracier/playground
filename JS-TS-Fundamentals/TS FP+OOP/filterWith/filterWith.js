@@ -1,43 +1,49 @@
 // Korzystając z wbudowanej funkcji tablicy .filter stwórz funkcję filterWith, która przeszuka podaną niżej tablicę obiektów po wszystkich jej wartościach. Funkcja musi także przeszukiwać wszystkie zagnieżdżenia tablic i obiektów).
 // Funkcja ma wykorzystywać rekurencję
 // Funkcja ma wykorzystywać RegExp(wyrażenie regularne)
-
 function filterWith(data, pattern) {
-  const regExpPattern = new RegExp(pattern);
-
-  let finalArray = data.filter((element, index, array) => {
-    const elementsInArray = Object.values(element);
-    let flag = false;
+  var regExpPattern = new RegExp(pattern);
+  // Czy można to jakoś prościej zrobić? I tak. wiem, że nie wklejam nigdzie index i array
+  var finalArray = data.filter(function (element, index, array) {
+    var elementsInArray = Object.values(element);
+    var flag = false;
     function goingThroughElementsInArray(elementsInArray, regExpPattern) {
+      if (typeof elementsInArray === 'number') {
+        elementsInArray = elementsInArray.toString();
+      }
       if (
         typeof elementsInArray === 'string' &&
         elementsInArray.match(regExpPattern)
       ) {
         flag = true;
       }
-      for (let i = 0; i < elementsInArray.length; i++) {
-        let singleElementInIteration = elementsInArray[i];
-        if (typeof singleElementInIteration === 'number') {
-          singleElementInIteration = singleElementInIteration.toString();
-        } else if (Array.isArray(singleElementInIteration)) {
-          console.log('weszło');
-          goingThroughElementsInArray(singleElementInIteration, regExpPattern);
-        } else if (typeof singleElementInIteration === 'object') {
-          for (let key in singleElementInIteration) {
-            if (singleElementInIteration.hasOwnProperty(key)) {
-              goingThroughElementsInArray(
-                singleElementInIteration[key],
-                regExpPattern
-              );
+      // Czy zasady clean code nie mówią, że powinienem to rozbić na 14 mniejszych funkcji? Bo tutaj się zrobiło ładne sphagetti, ale z drugiej strony rozbijanie tego sprawiłoby, żę to jest kod na 150 linijek
+      if (Array.isArray(elementsInArray)) {
+        for (var i = 0; i < elementsInArray.length; i++) {
+          var singleElementInIteration = elementsInArray[i];
+          if (typeof singleElementInIteration === 'number') {
+            singleElementInIteration = singleElementInIteration.toString();
+          } else if (Array.isArray(singleElementInIteration)) {
+            goingThroughElementsInArray(
+              singleElementInIteration,
+              regExpPattern
+            );
+          } else if (typeof singleElementInIteration === 'object') {
+            for (var key in singleElementInIteration) {
+              if (singleElementInIteration.hasOwnProperty(key)) {
+                goingThroughElementsInArray(
+                  singleElementInIteration[key],
+                  regExpPattern
+                );
+              }
             }
           }
-        }
-
-        if (
-          typeof singleElementInIteration === 'string' &&
-          singleElementInIteration.match(regExpPattern)
-        ) {
-          flag = true;
+          if (
+            typeof singleElementInIteration === 'string' &&
+            singleElementInIteration.match(regExpPattern)
+          ) {
+            flag = true;
+          }
         }
       }
     }
@@ -46,9 +52,35 @@ function filterWith(data, pattern) {
   });
   return finalArray;
 }
-
-
-const data = [
+// Stara funkcja. Chciałem ją zrefaktoryzować, zeby wyszło mniej skomplikowanie, ale się nie udało
+//   function search(data) {
+//     // if (data[nrObjectInData] == copiedData[nrObjectInData]) {
+//     // if (data._id) {
+//     //   // if ((Array.isArray(data)) && Object.keys((copiedData[nrObjectInData])) == Object.keys((data[nrObjectInData]))) {
+//     //   nrObjectInData++;
+//     // }
+//     if (Array.isArray(data)) {
+//       for (let i = 0; i < data.length; i++) {
+//         search(data[i]);
+//       }
+//     } else if (typeof data === 'object') {
+//       for (let key in data) {
+//         // Czy sprawdzenie if'em poniżej nie jest redundantne? W sensie przecież to iteruje po key'ach. Więc po co sprawdzać, czy ma key?
+//         if (data.hasOwnProperty(key)) {
+//           search(data[key]);
+//         }
+//       }
+//     } else if (
+//       (typeof data === 'string' || typeof data === 'number') &&
+//       data.toString().match(regExpPattern)
+//     ) {
+//       result.push(copiedData[nrObjectInData - 1]);
+//     }
+//   }
+//   search(data);
+//   return result;
+// }
+var data = [
   {
     _id: '5e985a07feddae7617ac44f6',
     age: 24,
@@ -183,12 +215,10 @@ const data = [
     ],
   },
 ];
-
-console.log(filterWith(data, 'brown'));
+console.log(filterWith(data, '3'));
 //   // tak aby:
 //   // - od 0 do 2 znaków w phrase zwracało pusty array,
 //   // - a powyżej 2 ma filtrować po każdej wartości typu string lub number w obiekcie
-
 //   function filterWith(arr, phrase) {
 //     // ...
 //     // return result;
@@ -215,10 +245,8 @@ console.log(filterWith(data, 'brown'));
 //       ],
 //     },
 //   ];
-
 //   filterWith(data, "nisi");
 //   // jako phrase przekazujemy jeden z tagów w tablicy tags ,który znajduje się w konretnym obiekcie;
-
 //   const result = [
 //     {
 //       _id: "5e985a07feddae7617ac44f6",
@@ -267,10 +295,8 @@ console.log(filterWith(data, 'brown'));
 //       ],
 //     },
 //   ];
-
 //   filterWith(data, "Delacruz Acevedo");
 //   // jako phrase przekazuje dane z tablicy friends,która znajduje się w konretnym obiekcie;
-
 //   const result = [
 //     {
 //       _id: "5e985a074984f9f08ccaaa4c",
