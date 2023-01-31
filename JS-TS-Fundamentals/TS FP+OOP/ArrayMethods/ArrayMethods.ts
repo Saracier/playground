@@ -7,17 +7,23 @@
 //  .every
 //  .some
 
-const forEachFn = <T>(array: T[], callback: (arg1: T) => void) => {
+const forEachFn = <T>(
+  array: T[],
+  callback: (arg1: T, index?: number, array?: T[]) => void
+) => {
   for (let i = 0; i < array.length; i++) {
-    callback(array[i]);
+    callback(array[i], i, array);
   }
   return;
 };
 
-const mapFn = <T>(array: T[], callback: (arg1: T) => T) => {
+const mapFn = <T>(
+  array: T[],
+  callback: (arg1: T, index?: number, array?: T[]) => T
+) => {
   let finalArray: T[] = [];
   for (let i = 0; i < array.length; i++) {
-    finalArray.push(callback(array[i]));
+    finalArray.push(callback(array[i], i, array));
   }
   return finalArray;
 };
@@ -32,45 +38,44 @@ const entriesFn = (array: entryInArray[]) => {
   return finalArray;
 };
 
-const filterFn = <T>(array: T[], callback: (arg1: T) => T) => {
+const filterFn = <T>(
+  array: T[],
+  callback: (arg1: T, index?: number, array?: T[]) => T
+) => {
   let finalArray: T[] = [];
   for (let i = 0; i < array.length; i++) {
     const currenArrayVal = array[i];
-    if (callback(currenArrayVal)) {
+    if (callback(currenArrayVal, i, array)) {
       finalArray.push(currenArrayVal);
     }
   }
   return finalArray;
 };
 
-//
-// Nie wiem jak usunąć ten błąd cholibka
-//
 const reduceFn = <T>(
   array: T[],
-  callback: (arg1: T, arg2: T) => T,
-  inital: T
+  callback: (arg1: T, arg2: T, index?: number, array?: T[]) => T,
+  inital?: T | undefined
 ) => {
-  let accumulator: T | undefined;
+  let accumulator: T = inital ?? array[0];
   for (let i = 0; i < array.length; i++) {
     const currenArrayVal = array[i];
-    if (i === 0) {
-      accumulator = inital;
-      accumulator = callback(accumulator, currenArrayVal);
-    } else {
-      accumulator = callback(accumulator, currenArrayVal);
-    }
+    accumulator = callback(accumulator, currenArrayVal, i, array);
   }
   return accumulator;
 };
 
 const everyFn = <T>(
   array: T[],
-  callback: (arg1: T) => T | undefined | null | boolean
+  callback: (
+    arg1: T,
+    index?: number,
+    array?: T[]
+  ) => T | undefined | null | boolean
 ) => {
   for (let i = 0; i < array.length; i++) {
     const currenArrayVal = array[i];
-    if (!callback(currenArrayVal)) {
+    if (!callback(currenArrayVal, i, array)) {
       return false;
     }
   }
@@ -79,11 +84,15 @@ const everyFn = <T>(
 
 const someFn = <T>(
   array: T[],
-  callback: (arg1: T) => T | undefined | null | boolean
+  callback: (
+    arg1: T,
+    index?: number,
+    array?: T[]
+  ) => T | undefined | null | boolean
 ) => {
   for (let i = 0; i < array.length; i++) {
     const currenArrayVal = array[i];
-    if (callback(currenArrayVal)) {
+    if (callback(currenArrayVal, i, array)) {
       return true;
     }
   }

@@ -7,7 +7,7 @@ var aggregateIntoChunks = function (array) {
         var randomForThisIteration = generateRandom();
         helperArray.push(array[i]);
         if ((helperArray.length >= randomForThisIteration && Math.random() < 0.3) ||
-            helperArray.length == 7) {
+            helperArray.length == 7 || array[i + 1] == 'undefined') {
             finalArray.push(helperArray);
             helperArray = [];
         }
@@ -27,6 +27,6 @@ function generateRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 // Sprawdzenie działania funckji:
-var alphabet = 'abcdefghijklmnoprstuwxyz'.split('');
+var alphabet = 'abcdl'.split('');
 var chunks = aggregateIntoChunks(alphabet);
 console.log(chunks);

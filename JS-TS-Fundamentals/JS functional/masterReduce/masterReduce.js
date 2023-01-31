@@ -21,11 +21,6 @@ function filterFn(array, callback) {
   }, []);
 }
 
-//   Sprawdzenie poprawności działania programu:
-// let arr = [1, 2, 3, 4, 5, 6];
-// let callback = (el) => el > 3;
-// console.log(filterFn(arr, callback));
-
 function everyFn(array, callback) {
   let copiedArray = array.reduce((accumulator, currentValue, indeks, array) => {
     if (callback(currentValue, indeks, array)) {
@@ -38,11 +33,6 @@ function everyFn(array, callback) {
   return copiedArray.length === array.length ? true : false;
 }
 
-//   Sprawdzenie poprawności działania programu:
-// let arr = [1,2,3,4,5,6];
-// let callback = (el) => typeof el === 'number';
-// console.log(everyFn(arr, callback));
-
 function someFn(array, callback) {
   let copiedArray = array.reduce((accumulator, currentValue, indeks, array) => {
     if (callback(currentValue, indeks, array)) {
@@ -54,7 +44,3 @@ function someFn(array, callback) {
   }, []);
   return copiedArray.length > 0 ? true : false;
 }
-//   Sprawdzenie poprawności działania programu:
-// let arr = [1, 2, 3, 4, 5, 6];
-// let callback = (el) => typeof el === 'number';
-// console.log(someFn(arr, callback));

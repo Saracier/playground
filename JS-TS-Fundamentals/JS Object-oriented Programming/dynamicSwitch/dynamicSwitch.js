@@ -36,7 +36,7 @@ class Switch {
   }
 }
 
-// ma to działać tak:
+// Sprawdzenie działania programu:
 const formChecker = new Switch();
 const value = 'test@';
 
