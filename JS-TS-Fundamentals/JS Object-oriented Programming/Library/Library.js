@@ -1,3 +1,5 @@
+// Aktualna wersja tego w folderze "TS FP+OOP". Ta wersja już nie jest rozwijana
+
 // Stwórz strukturę danych związaną z biblioteką, pełen opis znajduję się w kodzie poniżej
 // Wypracuj obiekt charakteryzujący użytkownika
 // Wypracuj obiekt charakteryzujący książkę
@@ -36,14 +38,6 @@ class Booking {
   constructor(user) {
     this.user = user;
   }
-  //
-  //
-  //
-  // Nie podobają mi się nazwy tych klas. Z jednej strony są za długie, a z drugiej strony nie wiem czy skrócenie tego do "countStartingDate" lub czegoś podobnego byłoby poprawne z perspektywy clean code
-  //
-  //
-  //
-  //
   countDateOfTakingBook() {
     return new Date();
   }
@@ -81,6 +75,7 @@ class Booking {
     let flag = true;
     for (let i = 0; i < this.listOfTakenBooks.length; i++) {
       if (this.listOfTakenBooks[i].book === book) {
+        // count penatly powinno przyjmować dwa argumenty
         const priceToPay = countPenatly();
         this.overdueCharge = this.overdueCharge + priceToPay;
         this.listOfTakenBooks.splice(i, 1);
@@ -124,15 +119,6 @@ class Library {
     listOfAvalibleBooks.push(newBook);
     listOfBooks.push(newBook);
   }
-  //
-  //
-  //
-  // W sumie w TSie używa się popularnie dekoratorów? Czy raczej nisza?
-  //
-  //
-  //
-  //
-  //
   removeBook(uuid) {
     for (let i = 0; i < listsOfAvalibleBooks; i++) {
       if (listsOfAvalibleBooks[i].uuid == uuid) {
@@ -150,22 +136,8 @@ class Library {
 
   printBooksInLibary() {
     let list = [];
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // Chyba troche za dużo polegam na for podczas iterowania. Jak możnaby pozamieniać fory?
-    //
-    //
-    //
-    //
-    //
-    //
-    for (let i = 0; i < listOfBooks.length; i++) {
-      const singleEntry = `Title: ${listOfBooks[i].title} Author: ${listOfBooks[i].author}, UUID: ${listOfBooks[i].uuid}`;
+    for (let i = 0; i < this.listOfBooks.length; i++) {
+      const singleEntry = `Title: ${this.listOfBooks[i].title} Author: ${this.listOfBooks[i].author}, UUID: ${this.listOfBooks[i].uuid}`;
       list.push(singleEntry);
     }
     return list;

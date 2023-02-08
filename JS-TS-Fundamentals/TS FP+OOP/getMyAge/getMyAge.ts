@@ -9,30 +9,16 @@ function getMyAge(input: string | number | Date) {
     typeof input !== 'number' &&
     !(input instanceof Date)
   ) {
-    console.log('wrong input');
+    console.error('wrong input');
     return;
   }
-  //
-  //
-  //
-  // Czy to naturalne, że komenda "tsc getMyAge.ts" nie działa mi w powershellu, a działa w bashu?
-  //
-  //
-  //
-  //
+
   let inputDate: number;
 
   if (typeof input === 'string' || typeof input === 'number') {
     if (typeof input === 'string') {
       input = parseInt(input);
     }
-    //
-    //
-    // Dlaczego jeżeli ustawie na inputDate: Date, to wywala mi błąd, a przy number już jest git?
-    // Przecież typescript po to ma specjalny typ "Date"
-    //
-    //
-    //
     inputDate = new Date(input, 1, 1).getFullYear();
   } else {
     inputDate = input.getFullYear();

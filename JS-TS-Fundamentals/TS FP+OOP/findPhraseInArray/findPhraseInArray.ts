@@ -5,6 +5,8 @@
 //
 // tsc findPhraseInArray.ts
 
+type singleResultArray = [number, string];
+
 const arr = [
   'Lorem',
   'ipsum',
@@ -22,37 +24,18 @@ const arr = [
   'vehicula',
   'placerat',
 ];
-//
-//
-//
-//
-// typować przed funkcją, czy w funkcji? Jak jest czyściej?
-//
-//
-//
-type singleResultArray = [number, string];
 
-function findPhraseInArray(inputedArray: string[], phrazeToFind: string) {
-  if (!Array.isArray(inputedArray) || typeof phrazeToFind !== 'string') {
+function findPhraseInArray(inputedArray: string[], phraseToFind: string) {
+  if (!Array.isArray(inputedArray) || typeof phraseToFind !== 'string') {
     return "i'm sorry. You have given wrong input values";
   }
-  const phrazeToFindUpperedCaseCopy = phrazeToFind.toUpperCase();
+  const phrazeToFindUpperedCaseCopy = phraseToFind.toUpperCase();
   const inputedArrayUpperedCaseCopy = inputedArray.map((el) =>
     el.toUpperCase()
   );
   let resultArray: singleResultArray[] = [];
 
   for (let i = 0; i < inputedArrayUpperedCaseCopy.length; i++) {
-    //
-    //
-    //
-    //
-    //
-    //
-    // Wcześniej ta linijka działała z includes. Czemu teraz tsc mi wywala błąd, mimo, że paca?
-    // if (inputedArrayUpperedCaseCopy[i].includes(phrazeToFindUpperedCaseCopy)) {
-    //
-    //
     if (
       inputedArrayUpperedCaseCopy[i].search(phrazeToFindUpperedCaseCopy) >= 0
     ) {
@@ -62,7 +45,7 @@ function findPhraseInArray(inputedArray: string[], phrazeToFind: string) {
 
   return resultArray.length > 0
     ? resultArray
-    : `i'm sorry. I cloudn't find any input that matched the ${phrazeToFind} phraze`;
+    : `i'm sorry. I cloudn't find any input that matched the ${phraseToFind} phraze`;
 }
 
 // Sprawdzenie działania programu:

@@ -1,3 +1,5 @@
+// Stare rozwiązanie. Nowe w "TS FP+OOP"
+
 // Napisz funkcje, w których wykorzystasz pętle for lub while w celu odwzorowania podanych niżej metod tablicowych:
 //  .forEach
 //  .map

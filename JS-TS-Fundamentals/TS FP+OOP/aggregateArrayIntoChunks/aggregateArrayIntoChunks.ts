@@ -1,7 +1,7 @@
 // Stwórz funkcję aggregateIntoChunks agregującą wszystkie elementy array na losowej długości chunki
 // Każdy chunk powienien mieć od 4 do 7 elementów, ostatni chunk też powinien być długości od 4 do 7
 
-// aggregateIntoChunks2 nie działa. Warunki na awaryjne przerwanie są skopane. korzystać ze zwyklego aggregateIntoChunks
+// aggregateIntoChunks2 nie działa. Warunki na awaryjne przerwanie są skopane, kiedyś to poprawię. Na razie korzystać ze zwyklego aggregateIntoChunks
 const aggregateIntoChunks2 = (array: string[]) => {
   let finalArray: string[][] = [];
   let copiedArray = [...array];

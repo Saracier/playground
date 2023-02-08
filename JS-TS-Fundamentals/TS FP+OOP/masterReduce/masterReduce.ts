@@ -3,13 +3,19 @@
 // Stwórz filterFn() – działa tak samo jak metoda tablicy .filter
 // Stwórz everyFn() – działa tak samo jak metoda tablicy .every
 // Stwórz someFn() - działa tak samo jak metoda tablicy .some
+[
+  { a: 1, b: 2 },
+  { a: 3, b: 4 },
+].map((x) => x.a);
+
+type S = unknown;
 
 function mapFn<T>(
   array: Array<T>,
-  callback: (currentValue: T, index: number, array: T[]) => T
+  callback: (currentValue: T, index: number, array: T[]) => S
 ) {
   let copiedArray = [...array];
-  return copiedArray.reduce((accumulator: T[], currentValue, index, array) => {
+  return copiedArray.reduce((accumulator: S[], currentValue, index, array) => {
     let modifiedValue = callback(currentValue, index, array);
     accumulator.push(modifiedValue);
     return accumulator;
@@ -18,7 +24,7 @@ function mapFn<T>(
 
 function filterFn<T>(
   array: T[],
-  callback: (currentValue: T, index: number, array: T[]) => T
+  callback: (currentValue: T, index: number, array: T[]) => boolean
 ) {
   let copiedArray = [...array];
   return copiedArray.reduce((accumulator: T[], currentValue, index, array) => {
@@ -34,7 +40,7 @@ function filterFn<T>(
 
 function everyFn<T>(
   array: T[],
-  callback: (currentValue: T, index: number, array: T[]) => T
+  callback: (currentValue: T, index: number, array: T[]) => boolean
 ) {
   let copiedArray = array.reduce(
     (accumulator: T[], currentValue, index, array) => {
@@ -57,7 +63,7 @@ function everyFn<T>(
 
 function someFn<T>(
   array: T[],
-  callback: (currentValue: T, index: number, array: T[]) => T
+  callback: (currentValue: T, index: number, array: T[]) => boolean
 ) {
   let copiedArray = array.reduce(
     (accumulator: T[], currentValue, index, array) => {
