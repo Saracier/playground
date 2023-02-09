@@ -1,3 +1,5 @@
+// To stara wersja tego pliku. Nowa znajduje się w TS FP+OOP. Ta nie będzie już rozwijana
+
 // Stwórz strukturę danych związaną z biblioteką, pełen opis znajduję się w kodzie poniżej
 //  Wypracuj obiekt charakteryzujący pojedyńczy kontakt
 //  Wypracuj obiekt charakteryzujący grupę kontakt

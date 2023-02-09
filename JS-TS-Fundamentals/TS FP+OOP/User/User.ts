@@ -1,5 +1,3 @@
-// To stara wersja tego pliku. Nowa znajduje się w TS FP+OOP. Ta nie będzie już rozwijana
-
 // Stwórz dwie klasy dla struktury danych związanych z użytkownikiem(wytyczne w kodzie poniżej)
 // Klasa User ma dostępne dwa poziomy dostępu: normal i admin.
 // Powinna umożliwiać zmianę hasła, emaila oraz poziomu dostępu.
@@ -16,25 +14,49 @@
 // - data (nieważne jaka wejdzie) do konstruktora musi wejść w formacie MM/DD/YYYY
 // - imię i nazwisko musi być niepuste
 
+enum userAcces {
+  admin,
+  normal,
+}
+
+//
+//
+//
+// Interfejsu nie można dla klasy ze statycznymi metodami?
+//
+//
+//
+//
+//
+
+// interface IValidator {
+//  firstnameValidator: (firstName: string) => string;
+//   surnameValidator: (surname: string) => string;
+//   birthDateValidator: (birthDate: string) => string;
+//   genderValidator: (gender: string) => string;
+//   emailValidator: (email: string) => string;
+//   accessTokenValidator: (accessToken: string) => string;
+// }
+
 class Validator {
-  static firstnameValidator(firstName) {
+  static firstnameValidator(firstName: string) {
     if (firstName.length <= 0 || typeof firstName !== 'string') {
       throw new Error('invalid first name');
     }
     return firstName;
   }
-  static surnameValidator(surname) {
-    if (firstName.length <= 0 || typeof firstName !== 'string') {
+  static surnameValidator(surname: string) {
+    if (surname.length <= 0 || typeof surname !== 'string') {
       throw new Error('invalid surname');
     }
     return surname;
   }
-  static birthDateValidator(birthDate) {
+  static birthDateValidator(birthDate: string) {
     const newDate = new Date(birthDate);
     return `${newDate.getMonth}/${newDate.getDay}/${newDate.getFullYear}`;
   }
 
-  static passwordValidator(password) {
+  static passwordValidator(password: string) {
     if (password.length < 8) {
       throw new Error('Your password needs a minimum of eight characters');
     } else if (password.search(/[0-9]/) < 0) {
@@ -47,14 +69,14 @@ class Validator {
       return password;
     }
   }
-  static genderValidator(gender) {
+  static genderValidator(gender: string) {
     if (gender !== 'male' && gender !== 'female') {
       throw new Error('Gender must be male or female');
     }
     return gender;
   }
 
-  static emailValidator(email) {
+  static emailValidator(email: string) {
     if (
       !email.match(
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -65,11 +87,11 @@ class Validator {
     return email;
   }
 
-  static accessTokenValidator(accessToken) {
-    if (accessToken === 'admin') {
+  static accessTokenValidator(accessToken: userAcces) {
+    if (accessToken === userAcces.admin) {
       return accessToken;
     } else {
-      return 'normal';
+      return userAcces.normal;
     }
   }
 }
@@ -82,14 +104,22 @@ class User {
   // płeć
   // adres email
   // poziom dostępu = ("user" | "admin")
+  firstName: string;
+  surname: string;
+  birthDate: string;
+  password: string;
+  gender: string;
+  email: string;
+  accessToken: userAcces;
+
   constructor(
-    firstName,
-    surname,
-    birthDate,
-    password,
-    gender,
-    email,
-    accessToken
+    firstName: string,
+    surname: string,
+    birthDate: string,
+    password: string,
+    gender: string,
+    email: string,
+    accessToken: userAcces
   ) {
     this.firstName = Validator.firstnameValidator(firstName);
     this.surname = Validator.surnameValidator(surname);
@@ -100,12 +130,22 @@ class User {
     this.accessToken = Validator.accessTokenValidator(accessToken);
   }
 
-  changeProperties(whatProperty, newValueOfProperty) {
-    if (whatProperty === 'password') {
+  changeProperties(
+    whatProperty: string,
+    newValueOfProperty: string | userAcces
+  ) {
+    if (whatProperty === 'password' && typeof newValueOfProperty === 'string') {
       return Validator.passwordValidator(newValueOfProperty);
-    } else if ((whatProperty = 'email')) {
+    } else if (
+      whatProperty === 'email' &&
+      typeof newValueOfProperty === 'string'
+    ) {
       return Validator.emailValidator(newValueOfProperty);
-    } else if ((whatProperty = 'accessToken')) {
+      // Jak zrobić sprawdzenie bez używania negacji w typeof newValueOfProperty !== 'string'?
+    } else if (
+      whatProperty === 'accessToken' &&
+      typeof newValueOfProperty !== 'string'
+    ) {
       return Validator.accessTokenValidator(newValueOfProperty);
     } else {
       throw new Error('inputed property cannot be changed');
@@ -115,10 +155,19 @@ class User {
 
 class App {
   // wszystkie metody w których admin ingeruje we właściwości innych użytkowników
+
+  listOfUsers: User[];
   constructor() {
     this.listOfUsers = [];
   }
-  createUser(firstName, surname, birthDate, password, gender, email) {
+  createUser(
+    firstName: string,
+    surname: string,
+    birthDate: string,
+    password: string,
+    gender: string,
+    email: string
+  ) {
     const newUser = new User(
       firstName,
       surname,
@@ -126,11 +175,18 @@ class App {
       password,
       gender,
       email,
-      'normal'
+      userAcces.normal
     );
     this.listOfUsers.push(newUser);
   }
-  createAdmin(firstName, surname, birthDate, password, gender, email) {
+  createAdmin(
+    firstName: string,
+    surname: string,
+    birthDate: string,
+    password: string,
+    gender: string,
+    email: string
+  ) {
     const newAdmin = new User(
       firstName,
       surname,
@@ -138,13 +194,21 @@ class App {
       password,
       gender,
       email,
-      'admin'
+      userAcces.admin
     );
     this.listOfUsers.push(newAdmin);
   }
 
-  changeUserProperties(sourceUser, targetUser, propertyName, newPropertyValue) {
-    if (sourceUser.accessToken === 'admin' || sourceUser === targetUser) {
+  changeUserProperties(
+    sourceUser: User,
+    targetUser: User,
+    propertyName: string,
+    newPropertyValue: string
+  ) {
+    if (
+      sourceUser.accessToken === userAcces.admin ||
+      sourceUser === targetUser
+    ) {
       targetUser.changeProperties(propertyName, newPropertyValue);
     } else {
       throw new Error(

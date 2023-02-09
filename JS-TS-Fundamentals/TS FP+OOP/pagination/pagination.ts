@@ -11,7 +11,7 @@
 function paginateArray(
   dataEntries: number[],
   settings: { actualPageIndex: number; entriesOnPage: number }
-) {
+): number[] | string {
   const { entriesOnPage, actualPageIndex } = settings;
   if (
     !Array.isArray(dataEntries) ||

@@ -4,10 +4,10 @@
 //  Klasa ma mieć metodę .isEmpty która sprawdza czy tablice cases i conditions są puste. Jeśli tak zwraca true
 //  Metoda .isValid zwraca true jeśli wszystkie warunki będą na false. Jeżeli jakikolwiek warunek zostanie spełniony, funkcja przerywa swoje działanie, wywołując przekazany callback dla tego warunku. Po każdym wykonaniu metody warunki i callbacki są czyszczone.
 
-type condi = { condition: boolean; callback: () => void };
+type Condition = { condition: boolean; callback: () => void };
 
 class Switch {
-  conditions: condi[] = []; // Czyli nasze warunki sprawdzające
+  conditions: Condition[] = []; // Czyli nasze warunki sprawdzające
 
   add(condition: boolean, callback: () => void) {
     this.conditions.push({

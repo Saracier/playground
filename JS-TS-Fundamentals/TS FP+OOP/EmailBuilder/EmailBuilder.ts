@@ -1,6 +1,6 @@
 //  Wykorzystując wzorzec projektowy Builder stwórz obiekt json reprezentujacy wszystkie parametry maila (parametry znajdują sie w kodzie poniżej)
 
-interface mail {
+interface IMail {
   from: string;
   to: string;
   title: string;
@@ -10,7 +10,7 @@ interface mail {
 }
 
 class EmailBuilder {
-  _mail: mail;
+  _mail: IMail;
   constructor() {
     this._mail = {
       from: '',
