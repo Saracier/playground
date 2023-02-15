@@ -118,24 +118,23 @@ class Flight implements IFLight {
     const totalFuel = this.countFuel();
     return 7 * totalFuel;
   }
+  countIncomeForClass(pickedClass: Passenger[]) {
+    let incomeForThisClass = 0;
+    pickedClass.forEach(
+      (el) => (incomeForThisClass += el.quantityPaidLuggage * 100)
+    );
+    return incomeForThisClass;
+  }
 
   countIncome() {
     const ticketPrice = 300;
     const incomeEconomic = this.economic.length * ticketPrice;
     const incomeBusiness = this.business.length * ticketPrice * 2;
     const incomeFirst = this.first.length * ticketPrice * 3;
-    let incomeLuggageEconomic = 0;
-    this.economic.forEach(
-      (el) => (incomeLuggageEconomic += el.quantityPaidLuggage * 100)
-    );
-    let incomeLuggageBusiness = 0;
-    this.business.forEach(
-      (el) => (incomeLuggageBusiness += el.quantityPaidLuggage * 100)
-    );
-    let incomeLuggageFirst = 0;
-    this.first.forEach(
-      (el) => (incomeLuggageFirst += el.quantityPaidLuggage * 100)
-    );
+    let incomeLuggageEconomic = this.countIncomeForClass(this.economic);
+    let incomeLuggageBusiness = this.countIncomeForClass(this.business);
+    let incomeLuggageFirst = this.countIncomeForClass(this.first);
+
     return (
       incomeEconomic +
       incomeBusiness +

@@ -16,14 +16,29 @@
 // - {id: 1241, name: Adam, lastName: "NieAdam" }
 // - {friends: [{id: 1241, name: Adam}]}
 
+//
+//
+//
+//
+// w zadaniu musi być rekurencja
+// bardziej na keys niż na entriesach
+//
+//
+//
+//
+
 function mergeObjects(input: object[]): object {
   let final = input.reduce(
     (accumulator: object[], currentValue, currentIndex, array) => {
       // const accEntries = Object.entries(accumulator) //array key value
+      // const merged =  Object.keys(currentValue).reduce((acc, el)=> {
+
+      // }, {})
 
       const accEntries = Object.entries(
         accumulator.reduce((acc, CV) => {
           const entries = Object.entries(CV);
+
           acc = { ...acc, ...entries };
           return acc;
         }, [])
