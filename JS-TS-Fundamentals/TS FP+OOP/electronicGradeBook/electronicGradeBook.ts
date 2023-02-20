@@ -9,7 +9,7 @@ interface ITeacher {
   firstName: string;
   secondName: string;
   subject: string;
-  inbox: [number, string][];
+  emailInbox: [number, string][];
 }
 
 class Teacher {
@@ -24,7 +24,7 @@ class Teacher {
   firstName: string;
   secondName: string;
   subject: string;
-  inbox: [number, string][] = [];
+  emailInbox: [number, string][] = [];
   uuid: number;
 
   constructor(firstName: string, secondName: string, subject: string) {
@@ -32,7 +32,6 @@ class Teacher {
     this.secondName = secondName;
     this.subject = subject;
     this.uuid = Math.random();
-    console.log(this.uuid);
   }
 }
 
@@ -52,10 +51,9 @@ class Parent {
   // - usprawiedliwianie nieobecności swojego dziecka
   // - wymianę wiadomości z nauczycielem
   uuid: number;
-  inbox: [number, string][] = [];
+  emailInbox: [number, string][] = [];
   constructor(public firstName: string, public secondName: string) {
     this.uuid = Math.random();
-    console.log(this.uuid);
   }
 }
 
@@ -67,14 +65,13 @@ class Student {
   // - wymianę wiadomości z nauczycielem
   uuid: number;
   grades: number[];
-  inbox: [number, string][] = [];
+  emailInbox: [number, string][] = [];
   constructor(
     public firstName: string,
     public secondName: string,
     public parent: Parent
   ) {
     this.uuid = Math.random();
-    console.log(this.uuid);
   }
 
   giveGrade(grade: number) {
@@ -121,20 +118,20 @@ class GradeBook {
   }
 
   addStudent(
-    requestUuid: number,
+    requestExecutorUuid: number,
     firstName: string,
     secondName: string,
     parent: Parent
   ) {
-    if (this.classTeacher.uuid !== requestUuid) {
+    if (this.classTeacher.uuid !== requestExecutorUuid) {
       return;
     }
     const newStudent = new Student(firstName, secondName, parent);
     this.listOfStudents.push(newStudent);
   }
 
-  deleteStudent(requestUuid: number, studentUuid: number) {
-    if (this.classTeacher.uuid !== requestUuid) {
+  deleteStudent(requestExecutorUuid: number, studentUuid: number) {
+    if (this.classTeacher.uuid !== requestExecutorUuid) {
       return;
     }
     const indexOfStudent = this.findStudent(studentUuid);
@@ -143,16 +140,20 @@ class GradeBook {
     }
   }
 
-  addParent(requestUuid: number, firstName: string, secondName: string) {
-    if (this.classTeacher.uuid !== requestUuid) {
+  addParent(
+    requestExecutorUuid: number,
+    firstName: string,
+    secondName: string
+  ) {
+    if (this.classTeacher.uuid !== requestExecutorUuid) {
       return;
     }
     const newParent = new Parent(firstName, secondName);
     this.listOfParents.push(newParent);
   }
 
-  deleteParent(requestUuid: number, parentUuid: number) {
-    if (this.classTeacher.uuid !== requestUuid) {
+  deleteParent(requestExecutorUuid: number, parentUuid: number) {
+    if (this.classTeacher.uuid !== requestExecutorUuid) {
       return;
     }
     const indexOfParent = this.findParent(parentUuid);
@@ -161,71 +162,92 @@ class GradeBook {
     }
   }
 
-  giveListOfParents(requestUuid: number) {
-    if (this.findTeacher(requestUuid) < 0) {
+  giveListOfParents(requestExecutorUuid: number) {
+    if (this.findTeacher(requestExecutorUuid) < 0) {
       return;
     }
     return this.listOfParents;
   }
 
-  giveListOfStudents(requestUuid: number) {
-    if (this.findTeacher(requestUuid) < 0) {
+  giveListOfStudents(requestExecutorUuid: number) {
+    if (this.findTeacher(requestExecutorUuid) < 0) {
       return;
     }
     return this.listOfStudents;
   }
 
-  lookThroughGrades(requestUuid: number, studentUuid: number) {
+  lookThroughGrades(requestExecutorUuid: number, studentUuid: number) {
     if (
-      this.findTeacher(requestUuid) < 0 ||
+      this.findTeacher(requestExecutorUuid) < 0 ||
       (this.findStudent(studentUuid) >= 0 &&
         this.listOfStudents[this.findStudent(studentUuid)].parent.uuid !==
-          requestUuid)
+          requestExecutorUuid)
     ) {
       return;
     }
     return this.listOfStudents[this.findStudent(studentUuid)].grades;
   }
 
-  addGrade(requestUuid: number, studentUuid: number, grade: number) {
-    if (this.findTeacher(requestUuid) < 0) {
+  addGrade(requestExecutorUuid: number, studentUuid: number, grade: number) {
+    if (this.findTeacher(requestExecutorUuid) < 0) {
       return;
     }
     this.listOfStudents[studentUuid].giveGrade(grade);
   }
 
-  printMessages(requestUuid: number) {
+  printMessages(requestExecutorUuid: number) {
     if (
-      this.listOfTeachers[this.findTeacher(requestUuid)].uuid === requestUuid
+      this.listOfTeachers[this.findTeacher(requestExecutorUuid)].uuid ===
+      requestExecutorUuid
     ) {
-      return this.listOfTeachers[this.findTeacher(requestUuid)].inbox;
-    }
-    if (this.listOfParents[this.findParent(requestUuid)].uuid === requestUuid) {
-      return this.listOfParents[this.findParent(requestUuid)].inbox;
+      return this.listOfTeachers[this.findTeacher(requestExecutorUuid)]
+        .emailInbox;
     }
     if (
-      this.listOfStudents[this.findStudent(requestUuid)].uuid === requestUuid
+      this.listOfParents[this.findParent(requestExecutorUuid)].uuid ===
+      requestExecutorUuid
     ) {
-      return this.listOfStudents[this.findStudent(requestUuid)].inbox;
+      return this.listOfParents[this.findParent(requestExecutorUuid)]
+        .emailInbox;
+    }
+    if (
+      this.listOfStudents[this.findStudent(requestExecutorUuid)].uuid ===
+      requestExecutorUuid
+    ) {
+      return this.listOfStudents[this.findStudent(requestExecutorUuid)]
+        .emailInbox;
     }
   }
 
-  sendMessage(requestUuid: number, targetUuid: number, message: string) {
+  sendMessage(
+    requestExecutorUuid: number,
+    targetUuid: number,
+    message: string
+  ) {
     if (
-      this.findTeacher(requestUuid) < 0 &&
-      this.findParent(requestUuid) < 0 &&
-      this.findStudent(requestUuid) < 0
+      this.findTeacher(requestExecutorUuid) < 0 &&
+      this.findParent(requestExecutorUuid) < 0 &&
+      this.findStudent(requestExecutorUuid) < 0
     ) {
       return;
     }
     if (this.findParent(targetUuid) >= 0) {
-      this.listOfStudents[targetUuid].inbox.push([requestUuid, message]);
+      this.listOfStudents[targetUuid].emailInbox.push([
+        requestExecutorUuid,
+        message,
+      ]);
     }
     if (this.findTeacher(targetUuid) >= 0) {
-      this.listOfTeachers[targetUuid].inbox.push([requestUuid, message]);
+      this.listOfTeachers[targetUuid].emailInbox.push([
+        requestExecutorUuid,
+        message,
+      ]);
     }
     if (this.findStudent(targetUuid) >= 0) {
-      this.listOfStudents[targetUuid].inbox.push([requestUuid, message]);
+      this.listOfStudents[targetUuid].emailInbox.push([
+        requestExecutorUuid,
+        message,
+      ]);
     }
   }
   //

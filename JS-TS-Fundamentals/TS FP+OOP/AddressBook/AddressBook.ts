@@ -35,7 +35,9 @@ class Contact implements IContact {
   }
 
   updateProperty(prop: string, newProperty: string | Date) {
-    this[prop] = newProperty;
+    if (this[prop]) {
+      this[prop] = newProperty;
+    }
     this.modificationDate = new Date();
   }
 

@@ -14,7 +14,7 @@
 // - data (nieważne jaka wejdzie) do konstruktora musi wejść w formacie MM/DD/YYYY
 // - imię i nazwisko musi być niepuste
 
-enum userAcces {
+enum UserAcces {
   admin,
   normal,
 }
@@ -30,7 +30,7 @@ enum userAcces {
 //
 
 // interface IValidator {
-//  firstnameValidator: (firstName: string) => string;
+//   firstnameValidator: (firstName: string) => string;
 //   surnameValidator: (surname: string) => string;
 //   birthDateValidator: (birthDate: string) => string;
 //   genderValidator: (gender: string) => string;
@@ -87,11 +87,11 @@ class Validator {
     return email;
   }
 
-  static accessTokenValidator(accessToken: userAcces) {
-    if (accessToken === userAcces.admin) {
+  static accessTokenValidator(accessToken: UserAcces) {
+    if (accessToken === UserAcces.admin) {
       return accessToken;
     } else {
-      return userAcces.normal;
+      return UserAcces.normal;
     }
   }
 }
@@ -110,7 +110,7 @@ class User {
   password: string;
   gender: string;
   email: string;
-  accessToken: userAcces;
+  accessToken: UserAcces;
 
   constructor(
     firstName: string,
@@ -119,7 +119,7 @@ class User {
     password: string,
     gender: string,
     email: string,
-    accessToken: userAcces
+    accessToken: UserAcces
   ) {
     this.firstName = Validator.firstnameValidator(firstName);
     this.surname = Validator.surnameValidator(surname);
@@ -132,7 +132,7 @@ class User {
 
   changeProperties(
     whatProperty: string,
-    newValueOfProperty: string | userAcces
+    newValueOfProperty: string | UserAcces
   ) {
     if (whatProperty === 'password' && typeof newValueOfProperty === 'string') {
       return Validator.passwordValidator(newValueOfProperty);
@@ -175,7 +175,7 @@ class App {
       password,
       gender,
       email,
-      userAcces.normal
+      UserAcces.normal
     );
     this.listOfUsers.push(newUser);
   }
@@ -194,7 +194,7 @@ class App {
       password,
       gender,
       email,
-      userAcces.admin
+      UserAcces.admin
     );
     this.listOfUsers.push(newAdmin);
   }
@@ -206,7 +206,7 @@ class App {
     newPropertyValue: string
   ) {
     if (
-      sourceUser.accessToken === userAcces.admin ||
+      sourceUser.accessToken === UserAcces.admin ||
       sourceUser === targetUser
     ) {
       targetUser.changeProperties(propertyName, newPropertyValue);
