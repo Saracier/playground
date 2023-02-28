@@ -16,18 +16,13 @@ const app = express();
 
 const routes = require('./routes/main');
 
-// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(routes);
 
 const APIURL = 'https://www.googleapis.com/books/v1/volumes';
 
 // const dataPath = path.join(path.dirname(process.mainModule.filename), 'data');
-
-
-
-
-
 
 // const functionWithAxios = (query) => {
 //   // axios.get(apiUrl).then()...

@@ -16,6 +16,7 @@ const firstPage = (req, res, next) => {
 const newItem = (req, res, next) => {
   console.log(`Komentarz z main.ts linijka okolice 17 ${req.body}`);
   res.redirect(`/${req.body}`);
+  // next();
 };
 
 const fileNameX = (req, res, next) => {
@@ -26,7 +27,7 @@ const fileNameX = (req, res, next) => {
 };
 
 router.get('/', firstPage);
-router.post('/newItem', newItem);
+router.post('/', newItem);
 router.get('/:fileNameX', fileNameX);
 
 module.exports = router;
