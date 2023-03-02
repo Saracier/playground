@@ -6,21 +6,26 @@
 // const express = require('express');
 // const fs = require('fs');
 // const path = require('path');
+// const dotenv = require('dotenv');
+
 import express from 'express';
-
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
-const router = express.Router();
+// const router = express.Router();
 
 const app = express();
 
-const routes = require('./routes/main');
-
+dotenv.config();
 app.use(bodyParser.urlencoded({ extended: false }));
+const routes = require('./routes/main');
+// import * as routes from './routes/main';
 
 app.use(routes);
 
-const APIURL = 'https://www.googleapis.com/books/v1/volumes';
+// const APIURL = 'https://www.googleapis.com/books/v1/volumes';
+
+const MY_PORT = process.env.PORT;
 
 // const dataPath = path.join(path.dirname(process.mainModule.filename), 'data');
 
@@ -30,4 +35,4 @@ const APIURL = 'https://www.googleapis.com/books/v1/volumes';
 
 // router.get('/:querryID', functionWithFetch(querryId));
 
-app.listen(3000);
+app.listen(MY_PORT);
