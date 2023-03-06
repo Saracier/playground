@@ -45,79 +45,34 @@ const recursivePromiseWithThen = (arrayOfPromises: Promise<any>[]) => {
   });
 };
 
-// const recursivePromise = async (arrayOfPromises: Promise<any>[]) => {
-//   const returnArray: (Promise<any> | unknown)[] = [];
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       arrayOfPromises.reduce(async (acc: Promise<any>, curr: Promise<any>, index: number) => {
-//         console.log(acc, index)
-//         await acc;
-//         let res;
-//         try {
-//           res = await curr;
-//           returnArray.push(res);
-//         } catch (err) {
-//           returnArray.push(err);
-//           resolve(returnArray);
-//         }
-//         if (returnArray.length === arrayOfPromises.length) {
-//           resolve(returnArray);
-//         }
-//         return acc;
-//       }, Promise.resolve(0));
-//     } catch (err) {
-//       reject(err);
-//     }
-//   });
-// };
-
-// const recursivePromiseButWithThen = (arrayOfPromises: Promise<any>[]) => {
-//   const returnArray: (Promise<any> | unknown)[] = [];
-//   return new Promise((resolve, reject) => {
-//     try {
-//       arrayOfPromises.reduce((acc: Promise<any>, curr: any) => {
-//         //
-//         // no i jak niby to zrobić na thenach?
-//         //
-//         acc
-//           .then((acc) => {
-//             // let res = curr.then(
-//             //       // jakis kod
-
-//             // )
-
-//             let res = curr.then((data) => {
-//               return data;
-//             });
-//             let obj = { res, acc };
-//             return obj;
-//           })
-//           .then()
-//           .finally(() => {
-//             return acc;
-//           })
-//           .catch(() => {
-//             return acc;
-//           });
-//         //   let res = curr;
-//         //   return res, acc)
-
-//         //   res = await curr;
-//         //   returnArray.push(res);
-//         // } catch (err) {
-//         //   returnArray.push(err);
-//         //   resolve(returnArray);
-//         // }
-//         // if (returnArray.length === arrayOfPromises.length) {
-//         //   resolve(returnArray);
-//         // }
-//         // return acc;
-//       }, Promise.resolve(0));
-//     } catch (err) {
-//       reject(err);
-//     }
-//   });
-// };
+const recursivePromiseWithReduce = async (arrayOfPromises: Promise<any>[]) => {
+  const returnArray: (Promise<any> | unknown)[] = [];
+  return new Promise(async (resolve, reject) => {
+    try {
+      arrayOfPromises.reduce(
+        async (acc: Promise<any>, curr: Promise<any>, index: number) => {
+          console.log(acc, index);
+          await acc;
+          let res;
+          try {
+            res = await curr;
+            returnArray.push(res);
+          } catch (err) {
+            returnArray.push(err);
+            resolve(returnArray);
+          }
+          if (returnArray.length === arrayOfPromises.length) {
+            resolve(returnArray);
+          }
+          return acc;
+        },
+        Promise.resolve(0)
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
 const promise1 = Promise.resolve(3);
 const promise2 = Promise.resolve(true);
