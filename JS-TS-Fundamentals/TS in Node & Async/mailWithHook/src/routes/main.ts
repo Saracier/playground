@@ -38,8 +38,8 @@ const router = express.Router();
 const sendFirstEmail = async (req: Request, res: Response, next: Function) => {
   try {
     const targetMail = req.params.targetMail;
-    await Util.sendFirstEmail(targetMail);
-    res.send(`mail will be sent to ${targetMail}. Check your inbox`);
+    const msgRes = await Util.sendFirstEmail(targetMail);
+    res.send(msgRes);
   } catch (err) {
     console.error(err);
     res.send('An error occured. Our Developers working on it');

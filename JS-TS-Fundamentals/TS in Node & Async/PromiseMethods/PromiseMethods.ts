@@ -13,10 +13,10 @@
 const promiseAll = async (arrayOfPromise: Promise<any>[]) => {
   // Działa, ale nie trzyma kolejności promisów, to ważne w Promise.All. Lepiej korzystać z promiseAll2
   return new Promise(async (resolve, reject) => {
-    const returnArray: any[] = [];
+    const returnArray: any[] = new Array(arrayOfPromise.length);
     try {
-      arrayOfPromise.forEach(async (element) => {
-        returnArray.push(await element);
+      arrayOfPromise.forEach(async (element, index) => {
+        returnArray[index] = await element;
         if (returnArray.length == arrayOfPromise.length) {
           resolve(returnArray);
         }

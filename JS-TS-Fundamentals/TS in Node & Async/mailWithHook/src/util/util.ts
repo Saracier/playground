@@ -86,6 +86,8 @@ export class Util {
 
       // Preview only available when sending through an Ethereal account
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      const messageReturn = `'Message sent: ${info.messageId})`;
+      return messageReturn;
       // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
     } catch (err) {
       if (typeof err === 'string') {
