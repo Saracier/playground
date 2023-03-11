@@ -7,10 +7,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="dvdLogoAnimation.js" defer></script>
+
 </head>
 
-<body style="margin: 0px;">
-    <canvas id="mainCanvas" style="box-sizing: border-box; width: 1000px; height: 800px"></canvas>
+<style>
+    body {
+        margin: 0px;
+        box-sizing: border-box;
+        display: flex;
+        justify-items: center;
+    }
+
+    canvas {
+        /* box-sizing: border-box; */
+        width: 800px;
+        height: 800px
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
+<body>
+    <canvas id="mainCanvas" "></canvas>
+    <div>
+        <label for=" speed">Speed:</label>
+
+        <input type="range" id="speed" name="speed" min="10" max="40" oninput="updateDVD()">
+
+        <label for="size">Size:</label>
+
+        <input type="range" id="size" name="size" min="10" max="100" oninput="updateDVD()">
+        <p id="counter">Had bumped into wall 0 times</p>
+        </div>
 </body>
 
 </html>
