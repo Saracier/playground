@@ -1,0 +1,21 @@
+/* p::after {
+    content: "I";
+    animation-name: pipe-show-hide;
+    animation-duration: 0.8s;
+    animation-iteration-count: infinite
+}
+
+@keyframes pipe-show-hide {
+    0% {
+        opacity: 0%
+    }
+    40% {
+        opacity: 100%
+    }
+    70% {
+        opacity: 100%
+    }
+    100% {
+        opacity: 0%
+    }
+} */

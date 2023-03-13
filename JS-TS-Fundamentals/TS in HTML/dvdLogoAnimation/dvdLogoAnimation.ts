@@ -14,8 +14,13 @@ const counter = document.getElementById('counter') as HTMLParagraphElement;
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
+if (c === null) {
+  throw new Error('cannot find canvas element on page');
+}
+
 function preparePlayground() {
-  c!.fillStyle = 'black';
+  // No i czemu mam ten błąd, że c posibbly null, skoro linijka 17 pilnuje, żeby nigdy nie był null?
+  c.fillStyle = 'black';
   c!.fillRect(0, 0, canvas.width, canvas.height);
 }
 
